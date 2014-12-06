@@ -5,7 +5,7 @@ This is a Repository for Codes written in the ROBOTIX Image Processing Workshop 
 
 Mentors:
 --------
-Abhinav Jain
-Abhinav Aggarwalla
-Shrey Garg
-Arnav Jain
+ Abhinav Jain
+ Abhinav Aggarwalla
+ Shrey Garg
+ Arnav Jain
