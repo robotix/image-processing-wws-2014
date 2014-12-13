@@ -1,0 +1,35 @@
+#include "stdafx.h"
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include <stdio.h>
+using namespace cv;
+
+
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	int i,j,a,val;
+	string img = "Source";
+	Mat image = imread(img, 0);
+	val = 0;
+
+	namedWindow("Window1", WINDOW_AUTOSIZE);
+	createTrackbar("Threshold", "Window1", &val, 255);
+
+	while (1)
+	{
+		for (i = 0; i < image.rows; i++)
+		{
+			for (j = 0; j < image.cols; j++)
+			{
+				image.at<uchar>(i, j) = val;
+			}
+		}
+		imshow("Window1", image);
+		a = waitkey(33);
+		if (a == 27)
+			break;
+
+	}
+	return 0;
+}

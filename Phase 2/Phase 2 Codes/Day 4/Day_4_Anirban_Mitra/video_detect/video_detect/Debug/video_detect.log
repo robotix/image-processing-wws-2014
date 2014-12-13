@@ -1,0 +1,14 @@
+﻿Build started 11-12-2014 16:04:54.
+     1>Project "C:\Users\Arunima\Documents\Visual Studio 2013\Projects\video_detect\video_detect\video_detect.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\video_detect.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt video_detect.cpp
+         video_detect.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Arunima\Documents\Visual Studio 2013\Projects\video_detect\Debug\video_detect.exe" /INCREMENTAL /NOLOGO opencv_core249d.lib opencv_imgproc249d.lib opencv_highgui249d.lib opencv_ml249d.lib opencv_video249d.lib opencv_features2d249d.lib opencv_calib3d249d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Arunima\Documents\Visual Studio 2013\Projects\video_detect\Debug\video_detect.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Arunima\Documents\Visual Studio 2013\Projects\video_detect\Debug\video_detect.lib" /MACHINE:X86 Debug\stdafx.obj
+         Debug\video_detect.obj
+         video_detect.vcxproj -> C:\Users\Arunima\Documents\Visual Studio 2013\Projects\video_detect\Debug\video_detect.exe
+     1>Done Building Project "C:\Users\Arunima\Documents\Visual Studio 2013\Projects\video_detect\video_detect\video_detect.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.04

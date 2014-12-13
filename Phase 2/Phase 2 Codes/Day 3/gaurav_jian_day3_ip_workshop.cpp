@@ -1,0 +1,381 @@
+#include <iostream>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <math.h>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
+using namespace std;
+using namespace cv;
+void gray_scale(Mat image ,Mat image2)
+{
+	int i,j,l,b;
+	b=image.cols;
+	l=image.rows;
+	
+	for(i=0;i<l;i++)
+	{	
+		for(j=0;j<b;j++)
+		{
+			
+			image2.at<uchar>(i,j)=0.56*image.at<Vec3b>(i,j)[0]+0.33*image.at<Vec3b>(i,j)[1]+0.11*image.at<Vec3b>(i,j)[2];
+		}
+	}
+	
+	  //namedWindow("Gray_Scale",CV_WINDOW_AUTOSIZE);
+	 //imshow("Gray_Scale",image2);
+	//waitKey(0);
+
+}	
+void binary_image(Mat image ,Mat image2,int threshold)
+{
+	int i,j,l,b,t;
+	l=image.rows;
+	b=image.cols;
+	
+	gray_scale(image,image2);
+	  //cout <<"Enter the threshhold value";
+	 //cin >> t;
+	//t=100;
+	for(i=0;i<l;i++)
+		for(j=0;j<b;j++)
+			image2.at<uchar>(i,j)>threshold?image2.at<uchar>(i,j)=255:image2.at<uchar>(i,j)=0;
+
+	  //namedWindow("binary_image",CV_WINDOW_AUTOSIZE);
+  	 //imshow("binary_image",image2);
+	//waitKey(0);
+
+}
+void invert_image(Mat image)
+{
+	int i,j,l,b,t1,t2,t3;
+	l=image.rows;
+	b=image.cols;
+	for(i=0;i<l/2;i++)
+	{
+		for(j=0;j<b;j++)
+		{
+			t1=image.at<Vec3b>(i,j)[0];
+			t2=image.at<Vec3b>(i,j)[1];
+			t3=image.at<Vec3b>(i,j)[2];
+			image.at<Vec3b>(i,j)[0]=image.at<Vec3b>(l-i-1,j)[0];
+			image.at<Vec3b>(i,j)[1]=image.at<Vec3b>(l-i-1,j)[1];
+			image.at<Vec3b>(i,j)[2]=image.at<Vec3b>(l-i-1,j)[2];
+			image.at<Vec3b>(l-i-1,j)[0]=t1;
+			image.at<Vec3b>(l-i-1,j)[1]=t2;
+			image.at<Vec3b>(l-i-1,j)[2]=t3;
+		}
+	}
+	namedWindow("invert_image",CV_WINDOW_AUTOSIZE);
+	imshow("invert_image",image);
+	waitKey(0);
+	/*Mat image2(l,b,CV_8UC3);
+	for(i=0;i<l;i++)
+	{
+		for(j=0;j<b;j++)
+		{
+			image2.at<Vec3b>(l-i-1,j)[0]=image.at<Vec3b>(i,j)[0];
+			image2.at<Vec3b>(l-i-1,j)[1]=image.at<Vec3b>(i,j)[1];
+			image2.at<Vec3b>(l-i-1,j)[2]=image.at<Vec3b>(i,j)[2];
+		}
+	}
+	namedWindow("invert_image2",CV_WINDOW_AUTOSIZE);
+	imshow("invert_image2",image2);
+	waitKey(0);*/
+
+}
+int histogram(Mat image,Mat	image2)
+{
+	int i,j,a[255],l,b,max=0,k,th;
+	long int sum=0,fsum=0;
+	//float k;
+	Mat graph(600,600,CV_8UC1,Scalar(255));
+	for(i=0;i<255;i++)
+		a[i]=0;
+
+	l=image.rows;
+	b=image.cols;
+
+	gray_scale(image,image2);
+
+	for(i=0;i<l;i++)
+		for(j=0;j<b;j++)
+			a[image2.at<uchar>(i,j)]++;
+	max=a[0];
+	for(i=1;i<255;i++)
+		if(a[i]>max)
+			max=a[i];
+
+	k=max/500;
+
+	for(j=0;j<255;j++)
+	{
+		for(i=0;i<600-a[j]/(k*2);i++)
+			graph.at<uchar>(i,j)=255;
+		for(i=600-a[j]/(k*2);i<600;i++)
+			graph.at<uchar>(i,j)=0;
+	}
+
+	namedWindow("Graph",CV_WINDOW_AUTOSIZE);
+	imshow("Graph",graph);
+	waitKey(0);
+
+	for(i=0;i<255;i++)
+		sum+=a[i];
+	for(i=0;fsum<sum/2;i++)
+		fsum+=a[i];
+	th=i-1;
+	return th;
+}
+
+void edge_detection(Mat image, Mat image2,int th)
+{
+	int i,j,max,min;
+	Mat gray_image(image.rows,image.cols,CV_8UC1);
+	gray_scale(image,gray_image);
+	
+	
+	for(i=1;i<gray_image.rows-1;i++)
+	{
+		for(j=1;j<gray_image.cols-1;j++)
+		{
+			min=max=gray_image.at<uchar>(i,j);
+		
+			for(int m=i-1;m<=i+1;m++)
+			{
+				for(int n=j-1;n<=j+1;n++)
+				{
+					if(min>gray_image.at<uchar>(m,n))
+						min=gray_image.at<uchar>(m,n);
+					if(max<gray_image.at<uchar>(m,n))
+						max=gray_image.at<uchar>(m,n);
+				}
+			}
+			if(max-min>th)
+				image2.at<uchar>(i,j)=255;
+			//cout<<image2.at<uchar>(i,j);
+		}
+	}
+
+}
+
+void edge_detection2(Mat image, Mat image2)
+{
+	int i,j,dx,dy,in;
+	Mat gray_image(image.rows,image.cols,CV_8UC1);
+	gray_scale(image,gray_image);
+
+	for(i=1;i<gray_image.rows-1;i++)
+	{
+		for(j=1;j<gray_image.cols-1;j++)
+		{
+			
+			dx=gray_image.at<uchar>(i-1,j+1)+gray_image.at<uchar>(i,j+1)+gray_image.at<uchar>(i+1,j+1)-gray_image.at<uchar>(i-1,j-1)-gray_image.at<uchar>(i,j-1)-gray_image.at<uchar>(i+1,j-1);
+				
+			dy=gray_image.at<uchar>(i+1,j-1)+gray_image.at<uchar>(i+1,j)+gray_image.at<uchar>(i+1,j+1)-gray_image.at<uchar>(i-1,j-1)-gray_image.at<uchar>(i-1,j)-gray_image.at<uchar>(i-1,j+1);
+
+			in=sqrt(dx*dx+dy*dy);
+			//cout<<in<< " ";
+			if(in>255)
+				in=255;
+			image2.at<uchar>(i,j)=in;
+			
+		}
+	}
+
+}
+
+void noise_reduction(Mat image,Mat image2)
+{
+	int i,j,cw,cb;
+	Mat imged(image.rows,image.cols,CV_8UC1);
+	edge_detection(image,imged,100);
+
+	namedWindow("Edge_detection",CV_WINDOW_AUTOSIZE);
+	imshow("Edge_detection",imged);
+	waitKey(0);
+
+	//Dilation
+	for(i=1;i<image.rows-1;i++)
+	{
+		for(j=1;j<image.cols-1;j++)
+		{
+			cw=cb=0;
+			{
+				for(int m=i-1;m<=i+1;m++)
+				{
+					for(int n=j-1;n<j+1;n++)
+					{
+						if(imged.at<uchar>(m,n)==255)
+							cw++;
+						else
+							cb++;
+					}
+				}
+				if(cw>cb)
+					image2.at<uchar>(i,j)=255;
+				else
+					image2.at<uchar>(i,j)=0;
+			}
+		}
+	}
+	namedWindow("Dilation",CV_WINDOW_AUTOSIZE);
+	imshow("Dilation",image2);
+	waitKey(0);
+  //erosion
+	for(i=1;i<image2.rows-1;i++)
+	{
+		for(j=1;j<image2.cols-1;j++)
+		{
+			cw=cb=0;
+			{
+				for(int m=i-1;m<=i+1;m++)
+				{
+					for(int n=j-1;n<j+1;n++)
+					{
+						if(imged.at<uchar>(m,n)==255)
+							cw++;
+						else
+							cb++;
+					}
+				}
+
+				if(cw<cb && cw>0)
+					image2.at<uchar>(i,j)=255;
+				else if(cw>cb && cb>0)
+					image2.at<uchar>(i,j)=0;
+				else image2.at<uchar>(i,j)= imged.at<uchar>(i,j);
+			}
+		}
+	}
+	
+}
+
+void Gray_Scale_Mean_Noise_Reduction(Mat image,Mat image2)
+{
+	 int i,j;
+	 Mat imged2(image.rows,image.cols,CV_8UC1);
+	 edge_detection2(image,imged2);
+	 for(i=1;i<image.rows-1;i++)
+	 {
+	 	for(j=1;j<image.cols;j++)
+	 	{
+	 		int sum=0;
+	 		for(int m=i-1;m<=i+1;m++)
+	 		{
+	 			for(int n=j-1;n<j+1;n++)
+	 			{
+	 				sum+=imged2.at<uchar>(m,n);
+	 			}
+	 		}
+	 		image2.at<uchar>(i,j)=sum/9;
+	 	}
+	 }
+	 namedWindow("Noise_ reducted_image_mean",CV_WINDOW_AUTOSIZE);
+    imshow("Noise_reducted_image_mean",image2);
+      waitKey(0);
+}
+
+void sort(int a[],int n)
+{
+	int min;
+	for(int i=0;i<n;i++)
+	{
+		min=a[i];
+		for(int j=i+1;j<n;j++)
+			if(min>a[i])
+				min=a[i];
+		a[i]=min;	
+	}
+}
+
+void Gray_Scale_Median_Noise_Reduction(Mat image,Mat image2)
+{
+	int i,j,a[9],k;
+	 Mat imged2(image.rows,image.cols,CV_8UC1);
+	 edge_detection2(image,imged2);
+	 for(i=1;i<image.rows-1;i++)
+	 {
+	 	for(j=1;j<image.cols-1;j++)
+	 	{
+	 		for(int m=i-1,k=0;m<=i+1;m++)
+	 		{
+	 			for(int n=j-1;n<j+1;n++)
+	 				a[k++]=imged2.at<uchar>(m,n);
+	 		}
+	 		sort(a,9);
+	 		image2.at<uchar>(i,j)=a[4];
+	 	}
+	 }
+	 namedWindow("Noise_ reducted_image_median",CV_WINDOW_AUTOSIZE);
+    imshow("Noise_reducted_image_median",image2);
+      waitKey(0);
+}
+void Gray_Scale_gaussian_Noise_Reduction(Mat image,Mat image2)
+{
+	int i,j;
+	 Mat imged2(image.rows,image.cols,CV_8UC1);
+	 edge_detection2(image,imged2);
+	 for(i=1;i<image.rows-1;i++)
+	 	for(j=1;j<image.cols-1;j++)
+	 		image2.at<uchar>(i,j)=(int)(0.06*imged2.at<uchar>(i-1,j-1)+0.098*imged2.at<uchar>(i-1,j)+0.06*imged2.at<uchar>(i-1,j+1)+0.098*imged2.at<uchar>(i,j-1)+0.062*imged2.at<uchar>(i,j)+0.098*imged2.at<uchar>(i,j+1)+0.06*imged2.at<uchar>(i+1,j-1)+0.098*imged2.at<uchar>(i+1,j)+0.06*imged2.at<uchar>(i+1,j+1));
+	 	namedWindow("Noise_ reducted_image_gaussian",CV_WINDOW_AUTOSIZE);
+    imshow("Noise_reducted_image_gaussian",image2);
+      waitKey(0);
+
+}
+
+int main()
+{	
+	Mat image;
+	int l,b,i,j,k,threshold,lower,upper;
+	//string fname;
+	//cout << "Enter file:";
+	//cin >> fname;
+	image = imread("/home/gaurav/OpenCV/WWS/gj.jpg");
+	imshow("Old_Window",image);
+	waitKey(0);
+	b=image.cols;
+	l=image.rows;
+	/*for(i=0;i<l;i++)
+	{
+		for(j=0;j<b;j++)w
+		{
+			image.at<Vec3b>(i,j)[0]=0;
+			image.at<Vec3b>(i,j)[1]=0;
+		}
+	}*/
+
+	//Mat image2(image.rows,image.cols,CV_8UC1),cannyimg(image.rows,image.cols,CV_8UC1);
+	//Gray_Scale_Mean_Noise_Reduction( image, image2);
+	//Gray_Scale_Median_Noise_Reduction( image, image2);
+	 //Gray_Scale_gaussian_Noise_Reduction( image, image2);
+
+
+		   //threshold=histogram(image,image2);
+		  //cout<<threshold<<"\n";
+	     //	gray_scale(image,image2);
+	     	
+
+	    // binary_image(image ,image2,threshold);
+	   //invert_image(image);
+	  //edge_detection2(image,image2);
+	 //noise_reduction(image,image2);
+	//namedWindow("Noise_ reducted_image",CV_WINDOW_AUTOSIZE);
+   // imshow("Noise_reducted_image",image2);
+  //    waitKey(0);
+	createTrackbar("lower","Old_Window",&lower,100);
+	createTrackbar("upper","Old_Window",&upper,200);
+	while(1)
+	{	
+		Mat image2(image.rows,image.cols,CV_8UC1,Scalar(0)),cannyimg(image.rows,image.cols,CV_8UC1);
+		gray_scale(image,image2);
+		Canny(image2,cannyimg,lower,upper);
+		imshow("Old_Window",cannyimg);
+		char a=waitKey(33);
+		if(a!= -1)
+			break;
+	}
+		
+	return 0;
+}

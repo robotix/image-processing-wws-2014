@@ -1,0 +1,131 @@
+// ComputerVision.cpp : Defines the entry point for the console application.
+//
+#include "stdafx.h"
+#include<iostream>
+#include<opencv2/core/core.hpp>
+#include<opencv2/highgui/highgui.hpp>
+
+
+using namespace std;
+using namespace cv;
+//using namespace Mat;
+
+Mat Glayscale(Mat image);
+Mat Binary(Mat image);
+int treshold(Mat image);
+Mat Histogram(Mat img);
+
+int main()
+{
+	Mat image;      
+	//int A[256];
+	image = imread("E:\\Photos\\Scenery\\image.jpg");
+
+	Mat img(image.rows, image.cols, CV_8UC1);
+	//cout << "cols" << img.cols;
+	Mat img2(image.rows, image.cols, CV_8UC1);
+	img2 = Histogram(image);
+	img = Glayscale(image);
+	int y = treshold(img);
+	//cout << "*******trs*" << treshold(img);
+	img = Binary(img);
+	namedWindow("Histogram", WINDOW_AUTOSIZE);  
+	imshow("Histogram", img2);
+	namedWindow("Binary", WINDOW_AUTOSIZE);
+	imshow("Binary", img);
+	waitKey(0);
+}
+
+//*****************************************************************************************
+Mat Glayscale(Mat image)
+{
+	Mat img(image.rows, image.cols, CV_8UC1);
+	for (int i = 0; i < image.cols; i++)               //Grayscaling
+	{
+		for (int j = 0; j < image.rows; j++)
+		{
+			img.at<uchar>(j, i) = 0.56*(image.at<Vec3b>(j, i)[0]) + 0.33*(image.at<Vec3b>(j, i)[1]) + 0.11*(image.at<Vec3b>(j, i)[2]);
+		}
+	}
+	return img;
+}
+//*****************************************************************************************
+Mat Binary(Mat image)
+{
+	Mat img(image.rows, image.cols, CV_8UC1);
+	int u = treshold(image);
+	for (int i = 0; i < image.cols; i++)
+	{
+		for (int j = 0; j < image.rows; j++)
+		{
+			if(image.at<uchar>(j, i)>=u)
+		    {
+				img.at<uchar>(j, i) = 255;
+		    }
+		    else
+		    {
+				img.at<uchar>(j, i) = 0;
+			}
+		}
+	}
+	return img;
+}
+//******************************************************************************************
+int treshold(Mat image)
+{
+	int A[256];
+	for (int i = 0; i < 256; i++)
+		A[i] = 0;
+	for (int i = 0; i < image.cols; i++)
+	{
+		for (int j = 0; j < image.rows; j++)
+		{
+			A[image.at<uchar>(j, i)]++;
+		}
+	}
+
+	int k = image.rows*image.cols / 2;
+	int count = 0;
+	int d;
+	for (d = 0; d < 256; d++)
+	{
+		count = count + A[d];
+		if (count >= k)
+			break;
+	}
+
+	return d;
+
+}
+
+Mat Histogram(Mat img)
+{
+	int A[256];
+	for (int i = 0; i < 256; i++)
+		A[i] = 0;
+	for (int i = 0; i < img.cols; i++)
+	{
+		for (int j = 0; j < img.rows; j++)
+		{
+			A[img.at<uchar>(j, i)]++;
+		}
+	}
+
+	for (int i = 0; i < 256; i++)
+		A[i] = A[i] / 100;
+	
+	Mat iml(img.rows, img.cols, CV_8UC1);
+	for (int i = 0; i < iml.cols; i++)
+	for (int j = 0; j < iml.rows; j++)
+	{
+		iml.at<uchar>(j, i) = 255;
+	}
+	for (int i = 0; i < 256; i++)
+	{
+		for (; A[i]>0; A[i]--)
+		{
+			iml.at<uchar>(iml.rows - A[i],i ) = 0;
+		}
+	}
+	return iml;
+}
