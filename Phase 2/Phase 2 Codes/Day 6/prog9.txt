@@ -1,0 +1,344 @@
+
+#include <stdafx.h>
+#include <iostream>
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include <stdio.h>
+#include<stdlib.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <queue>
+#include <vector>
+using namespace cv;
+using namespace std;
+
+struct figc
+{
+	int nvert;
+	Point p;
+};
+int B[3], t1[3], G[3], t2[3], R[3], t3[3];
+
+
+
+
+
+int temp = 0;
+int **mark;
+Mat img2;
+long long int centroid[100][4];
+
+
+Mat binary1(Mat cvt1)
+{
+	Mat ret(cvt1.size(), CV_8UC1);
+	for (int i = 0; i < cvt1.rows; i++)
+	{
+		for (int j = 0; j < cvt1.cols; j++)
+		{
+			if (cvt1.at<uchar>(i, j) == 255)
+				ret.at<uchar>(i, j) = 255;
+			else
+				ret.at<uchar>(i, j) = 0;
+		}
+	}
+	return ret;
+}
+
+//void blob(Mat in, int i, int j)
+//{
+//	int pixel = 0;
+//	temp++;
+//	queue<Point> q;
+//	Point p;
+//	p.x = j;
+//	p.y = i;
+//	q.push(p);
+//	mark[i][j] = 0;
+//	centroid[temp][0] = i;
+//	centroid[temp][1] = j;
+//	while (!q.empty())
+//	{
+//		p = q.front();
+//		q.pop();
+//		mark[p.y][p.x] = temp;
+//
+//
+//		for (int k = p.y - 1; k < p.y + 2; k++)
+//		{
+//			for (int l = p.x - 1; l < p.x + 2; l++)
+//			{
+//
+//				if ((in.at<uchar>(k, l) == 0) && (mark[k][l] == -1))
+//				{
+//					mark[k][l] = temp;
+//					p.x = l;
+//					p.y = k;
+//					q.push(p);
+//					pixel++;
+//					centroid[temp][0] += k;
+//					centroid[temp][1] += l;
+//
+//				}
+//			}
+//		}
+//
+//	}
+//	centroid[temp][0] /= pixel;
+//	centroid[temp][1] /= pixel;
+//	cout << centroid[temp][0] << "," << centroid[temp][1] << endl;
+//
+//
+//}
+
+
+
+//void traversal(Mat in)
+//{
+//
+//
+//	// dynamically allocate an array
+//	mark = new int *[in.rows];
+//	for (int count = 0; count < in.rows; count++)
+//	{
+//		mark[count] = new int[in.cols];
+//	}
+//
+//
+//
+//	for (int i = 0; i < in.rows; i++)
+//	{
+//		for (int j = 0; j < in.cols; j++)
+//		{
+//			mark[i][j] = -1;
+//		}
+//	}
+//
+//	for (int i = 1; i < in.rows - 1; i++)
+//	{
+//		for (int j = 1; j < in.cols - 1; j++)
+//		{
+//			if ((in.at<uchar>(i, j) == 0) && (mark[i][j] == -1))
+//				blob(in, i, j);
+//		}
+//	}
+//
+//}
+
+void center(Mat img0,Mat img1)
+{
+	vector<vector<Point>> c;
+	vector<Point> app;
+	
+	findContours(img1, c, CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE);
+	for (int i = 1; i < c.size(); i++)
+	
+	{
+		int counter = 0;
+		approxPolyDP(c[i], app, .02*arcLength(c[i], true), true);
+		centroid[i][2] = app.size();
+		if (app.size()>4)
+		{
+			centroid[i][2] = -1;
+			long int sumx = 0, sumy = 0;
+			for (int j = 0; j < c[i].size(); j++)
+			{
+				sumx += c[i][j].x;
+				sumy += c[i][j].y;
+			}
+			centroid[i][0] = sumx / c[i].size();
+			centroid[i][1] = sumy / c[i].size();
+
+		}
+		if (app.size() == 3)
+		{
+			centroid[i][2] = 3;
+			centroid[i][0] = (int)(app[0].x + app[1].x + app[2].x) / 3;
+			centroid[i][1] = (int)(app[0].y + app[1].y + app[2].y) / 3;
+
+		}
+		if (app.size() == 4)
+		{
+			centroid[i][2] = 4;
+			centroid[i][0] = (int)(app[0].x + app[1].x + app[2].x + app[3].x) / 4;
+			centroid[i][1] = (int)(app[0].y + app[1].y + app[2].y + app[3].y) / 4;
+
+		}
+		cout << centroid[i][0] << "," << centroid[i][1] << "," << centroid[i][2] << endl;
+	}
+
+
+		
+	
+}
+Mat binary_th(Mat img)
+{
+	Mat ret(img.size(), CV_8UC1, Scalar(255));
+	for (int i = 0; i < ret.rows; i++)
+	{
+		for (int j = 0; j < ret.cols; j++)
+		{
+			if ((img.at<Vec3b>(i, j)[0]>200 && img.at<Vec3b>(i, j)[1]<200 && img.at<Vec3b>(i, j)[2]<200) || (img.at<Vec3b>(i, j)[1]>200 && img.at<Vec3b>(i, j)[0]<200 && img.at<Vec3b>(i, j)[2]<200) || (img.at<Vec3b>(i, j)[2] > 200 && img.at<Vec3b>(i, j)[1]<200 && img.at<Vec3b>(i, j)[0]<200))
+				ret.at<uchar>(i, j) = 0;
+
+		}
+	}
+
+	/*namedWindow("wind1", WINDOW_NORMAL);
+	imshow("wind1", ret);
+	waitKey(0);*/
+	return ret;
+
+
+}
+void box(Mat img0,int x, int y)
+{
+	
+	int i, j;
+	if (1)
+	{
+		for (i = img0.rows; i > img0.rows-30; i--)
+		for (j = x - 30; j < x + 30; j++)
+		{
+			img0.at<Vec3b>(i, j)[0] = 0;
+			img0.at<Vec3b>(i, j)[1] = 0;
+			img0.at<Vec3b>(i, j)[2] = 0;
+		}
+	
+	}
+	
+}
+
+Mat img1, img0,img01;
+
+
+
+
+int main()
+{
+	VideoCapture V1("C:/az.mp4"), V2("C:/az.mp4");
+	
+
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				centroid[i][j] = 0;
+			}
+		}
+		Mat  temp;
+		while (1)
+		{
+			V1 >> img0;
+			V2 >> img01;
+
+			//img0 = imread("C:/we.png", CV_LOAD_IMAGE_COLOR);
+			//img01 = imread("C:/we.png", CV_LOAD_IMAGE_COLOR);
+			//temp = imread("C:/ltt.", CV_LOAD_IMAGE_GRAYSCALE);
+			//temp = binary1(temp);
+			//imshow("winbin", temp);
+			//cvtColor(img0, img1, CV_BGR2GRAY);
+			img1 = binary_th(img01);
+			//img1 = binary1(img1);
+
+			//Mat blob1(img1.size(), CV_8UC1, Scalar(0)), blob2(img1.size(), CV_8UC1, Scalar(0)), blob3(img1.size(), CV_8UC1, Scalar(0)), blob4(img1.size(), CV_8UC1, Scalar(0)), blob1copy(img1.size(), CV_8UC1, Scalar(0));
+			center(img0, img1);
+			for (int i = 0; i < 4; i++)
+			{
+				if (img0.at<Vec3b>(centroid[i][1]+5, centroid[i][0])[0]>200 || img0.at<Vec3b>(centroid[i][1] + 5, centroid[i][0])[0] > 200)
+					centroid[i][3] = 1;
+				else if (img0.at<Vec3b>(centroid[i][1]+5, centroid[i][0])[1] > 200)
+					centroid[i][3] = 2;
+				else if (img0.at<Vec3b>(centroid[i][1]+5, centroid[i][0])[2] > 200)
+					centroid[i][3] = 3;
+				//cout << centroid[i][3] << endl;
+			}
+			for (int i = 1; i <= 4; i++)
+			{
+				cout << centroid[i][0] << "," << centroid[i][1] << "," << centroid[i][2] << "," << centroid[i][3] << endl;
+			}
+
+
+
+
+
+			int flap = 0;
+			while (1)
+			{
+				if (flap)
+					break;
+
+				for (int i = 1; i <= 5; i++)
+				{
+					if (flap)
+						break;
+					if ((centroid[i][2] == -1) && (centroid[i][3] == 1))
+					{
+						box(img0, centroid[i][0], centroid[i][1]);
+						cout << "go to" << centroid[i][0] << "," << centroid[i][1];
+						flap = 1;
+						break;
+					}
+
+				}
+				for (int i = 1; i <= 5; i++)
+				{
+					if (flap)
+						break;
+					if ((centroid[i][2] == 4) && (centroid[i][3] == 3))
+					{
+						box(img0, centroid[i][0], centroid[i][1]);
+						cout << "go to" << centroid[i][0] << "," << centroid[i][1] << "," << centroid[i][2] << "," << centroid[i][3];
+						flap = 1;
+						break;
+					}
+
+				}
+				for (int i = 1; i <= 5; i++)
+				{
+					if (flap)
+						break;
+					if ((centroid[i][2] == 3) && (centroid[i][3] == 3))
+					{
+						box(img0, centroid[i][0], centroid[i][1]);
+						cout << "go to" << centroid[i][0] << "," << centroid[i][1];
+						flap = 1;
+						if (i == 4)
+							flap = 1;
+						break;
+					}
+					if (i == 4)
+						flap = 1;
+
+				}
+
+
+			}
+
+			namedWindow("wind", WINDOW_NORMAL);
+			imshow("wind", img0);
+			char z = waitKey(1000);
+
+
+
+
+
+		}
+
+
+		
+		//if (z == 27 || z == 32)
+			//break;
+		return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

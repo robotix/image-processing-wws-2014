@@ -1,0 +1,92 @@
+#include "stdafx.h"
+#include <iostream>
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include <stdio.h>
+using namespace cv;
+using namespace std;
+#include <opencv2/imgproc/imgproc.hpp>
+#include <queue>
+#include<math.h>
+//initialise 0 to hough
+//read image
+
+//Mat in;
+//Mat hough(2000,365,CV_8UC1,Scalar(0));
+Mat out;
+ 
+void line(Mat a,Mat image,Mat lin)
+{
+	
+	int r = 0, t = 0;
+	for (int i = 0; i < image.rows; i++)
+	{
+		for (int j = 0; j < image.cols; j++)
+		{
+			if (image.at<uchar>(i, j) < image.at<uchar>(r, t))
+				r = i;
+			    t = j;
+		}
+	}
+	cout << r<<","<< t;
+	
+	for (int i = 0; i < lin.rows; i++)
+	{
+		for (int j = 0; j < lin.cols; j++)
+		{
+			if (((int)(fabs(cos(t*3.14 / 180)*j + sin(t*3.14 / 180)*i)) == r))
+			
+				lin.at<uchar>(i, j) = 0;
+
+				
+
+			else
+				lin.at<uchar>(i, j) = 255;
+				
+		}
+	}
+	namedWindow("line", CV_WINDOW_NORMAL);
+	imshow("line", lin);
+	waitKey(0);
+
+}
+
+
+
+Mat hough(Mat a,Mat lin)
+
+{
+	int i, j, w, r, t;
+	w = (int)pow(a.rows*a.rows + a.cols*a.cols, 0.5);
+	Mat image(w, 180, CV_8UC1, Scalar(255));
+	for (i = 0; i<a.rows; i++)
+	for (j = 0; j<a.cols; j++)
+	{
+		if (a.at<uchar>(i, j) == 0)
+		{
+			for (t = 0; t<180; t++)
+			{
+				r = (int)(fabs(cos(t*3.14 / 180)*j + sin(t*3.14 / 180)*i));
+				if (image.at<uchar>(r, t) == 0)    continue;
+				else
+					image.at<uchar>(r, t) -= 10;
+			}
+		}
+	}
+	line(a,image,lin);
+	return image;
+}
+int main()
+{
+	
+	Mat a;
+	a = imread("C:/c.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat lin( a.rows,a.cols, CV_8UC1,Scalar(255));
+	Mat h((int)(pow(a.rows*a.rows + a.cols*a.cols, 0.5)), 180, CV_8UC1);
+	h = hough(a,lin);
+	namedWindow("Hough", CV_WINDOW_NORMAL);
+	imshow("Hough", h);
+	waitKey(0);
+	return 0;
+}
+
