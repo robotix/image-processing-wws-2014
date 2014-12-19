@@ -18,6 +18,7 @@ This Repository contains:
   - Shell Script to Compile OpenCV Programs (For Linux Users)
   - Arduino Code for the Robot used during the Workshop.
   - Sample Images for different modules (Blob/Colour Detection , Noise Reduction)
+  - Video for **Problem Statement - I** - *Falling Shapes*
 
 ##Mentors
 ###Phase I
