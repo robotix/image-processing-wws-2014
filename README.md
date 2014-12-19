@@ -38,10 +38,13 @@ This Repository contains:
 11. **Edge Detection** - Need for detecting Edges in an Image, **Naive** Edge Detection Algorithm, **Prewitt*** and **Canny** Edge Detection.
 12. **Video Processing** - Video as a continous set of images/frames, processing video from file/camera, implementing trackbar to vary threshold to convert to binary.
 13. **Colour Detection** - Need for colour detection, different types of colour spaces - RGB/HSV/HSL, Colour Detection in RGB Colour Space and in HSV Colour Space.
-14. **Blob Detection** - Detection of Blobs in a Binary Image using **Naive Algorithm****, **Breadth-First-Search** by implementing a queue. Also a brief idea on how to use **Depth-First-Search**(or Recursion) to do the same.
+14. **Blob Detection** - Detection of Blobs in a Binary Image using **Naive Algorithm**** , **Breadth-First-Search** by implementing a queue. Also a brief idea on how to use **Depth-First-Search**(or Recursion) to do the same.
 15. **Shape Detection** - Need for Shape Detection, **Naive** Algorithms based on Geometrical Features of Shapes, Extracting **Contours** and Approximating Polygons for each contour extracted.
 16. **Hardware** - Description of the complete working of the system, Explanation of Different Modules (Image Processing, Intelligence, and Controls), What is the final result of the Image Processing that is done,
 Introduction to **Microcontroller(AVR/Arduino)** and **Motor Driver**, **Serial Communication** (Basics, Baud Rate), Integrating Serial Communication in your code.
+
+\*Not Covered in First Phase <br>
+\*\*Not Covered in Second Phase 
 
 ##Problem Statements:
 
