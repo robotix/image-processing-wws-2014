@@ -13,7 +13,8 @@ This Repository contains:
   - Feature Extraction and Image Processing by Mark Nixon and Alberto Aguado - E-Book
   - IP Workshop Questionnaire
   - Serial Communication Header and Source Files (For Visual Studio)
-  - Shell Script to Compile OpenCV Programs (For Linux Users) 
+  - Shell Script to Compile OpenCV Programs (For Linux Users)
+  - Arduino Code for the Robot used during the Workshop.
 
 ##Mentors
 ###Phase I
