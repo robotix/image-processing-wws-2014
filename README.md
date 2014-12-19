@@ -9,6 +9,9 @@ This Repository contains:
 3. Installation Instructions:
   - For Windows Users
   - For Linux/Mac Users
+4. Resources:
+  - Feature Extraction and Image Processing by Mark Nixon and Alberto Aguado - E-Book
+  - IP Workshop Questionnaire
 
 ##Mentors
 ###Phase I
