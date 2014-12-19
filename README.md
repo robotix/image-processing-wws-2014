@@ -11,7 +11,7 @@ This Repository contains:
   - For Linux/Mac Users
 4. Resources:
   - Feature Extraction and Image Processing by Mark Nixon and Alberto Aguado - E-Book
-  - End Evaluation Paper
+  - IP Workshop Questionnaire
 
 ##Mentors
 ###Phase I
