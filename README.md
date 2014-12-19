@@ -12,6 +12,8 @@ This Repository contains:
 4. Resources:
   - Feature Extraction and Image Processing by Mark Nixon and Alberto Aguado - E-Book
   - IP Workshop Questionnaire
+  - Serial Communication Header and Source Files (For Visual Studio)
+  - Shell Script to Compile OpenCV Programs (For Linux Users) 
 
 ##Mentors
 ###Phase I
@@ -47,7 +49,7 @@ This Repository contains:
 Introduction to **Microcontroller(AVR/Arduino)** and **Motor Driver**, **Serial Communication** (Basics, Baud Rate), Integrating Serial Communication in your code.
 
 \*Not Covered in First Phase <br>
-\*\*Not Covered in Second Phase 
+\*\*Not Covered in Second Phase
 
 ##Problem Statements:
 
