@@ -43,8 +43,8 @@ This Repository contains:
 16. **Hardware** - Description of the complete working of the system, Explanation of Different Modules (Image Processing, Intelligence, and Controls), What is the final result of the Image Processing that is done,
 Introduction to **Microcontroller(AVR/Arduino)** and **Motor Driver**, **Serial Communication** (Basics, Baud Rate), Integrating Serial Communication in your code.
 
-* Not Covered in First Phase
-** Not Covered in Second Phase 
+\*Not Covered in First Phase <br>
+\*\*Not Covered in Second Phase 
 
 ##Problem Statements:
 
