@@ -17,6 +17,7 @@ This Repository contains:
   - Serial Communication Header and Source Files (For Visual Studio)
   - Shell Script to Compile OpenCV Programs (For Linux Users)
   - Arduino Code for the Robot used during the Workshop.
+  - Sample Images for different modules (Blob/Colour Detection , Noise Reduction)
 
 ##Mentors
 ###Phase I
