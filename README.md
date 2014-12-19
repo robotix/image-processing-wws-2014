@@ -10,7 +10,9 @@ This Repository contains:
   - For Windows Users
   - For Linux/Mac Users
 4. Resources:
-  - Feature Extraction and Image Processing by Mark Nixon and Alberto Aguado - E-Book
+  - **E-Books:**
+    - Feature Extraction and Image Processing by Mark Nixon and Alberto Aguado
+    - Digital Image Processing by Gonzalez and Woods
   - IP Workshop Questionnaire
   - Serial Communication Header and Source Files (For Visual Studio)
   - Shell Script to Compile OpenCV Programs (For Linux Users)
