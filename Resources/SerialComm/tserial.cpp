@@ -1,4 +1,4 @@
-
+#include "stdafx.h"
 
 
 /* ------------------------------------------------------------------------ --
@@ -38,7 +38,6 @@
 #include <process.h>
 #include <conio.h>
 #include <windows.h>
-#include <stdafx.h>
 #include "tserial.h"
 
 /* -------------------------------------------------------------------- */
@@ -95,8 +94,8 @@ int  Tserial::connect          (char *port_arg, int rate_arg, serial_parity pari
 
         /* -------------------------------------------------------------------- */
         // set DCB to configure the serial port
-        dcb.DCBlength       = sizeof(dcb);                   
-        
+        dcb.DCBlength       = sizeof(dcb);
+
         /* ---------- Serial Port Config ------- */
         dcb.BaudRate        = rate;
 
@@ -119,7 +118,7 @@ int  Tserial::connect          (char *port_arg, int rate_arg, serial_parity pari
 
         dcb.StopBits        = ONESTOPBIT;
         dcb.ByteSize        = 8;
-        
+
         dcb.fOutxCtsFlow    = 0;
         dcb.fOutxDsrFlow    = 0;
         dcb.fDtrControl     = DTR_CONTROL_DISABLE;
@@ -127,7 +126,7 @@ int  Tserial::connect          (char *port_arg, int rate_arg, serial_parity pari
         dcb.fRtsControl     = RTS_CONTROL_DISABLE;
         dcb.fOutX           = 0;
         dcb.fInX            = 0;
-        
+
         /* ----------------- misc parameters ----- */
         dcb.fErrorChar      = 0;
         dcb.fBinary         = 1;
@@ -139,7 +138,7 @@ int  Tserial::connect          (char *port_arg, int rate_arg, serial_parity pari
         dcb.XonChar         = 0x13;
         dcb.XoffChar        = 0x19;
         dcb.EvtChar         = 0;
-        
+
         /* -------------------------------------------------------------------- */
         serial_handle    = CreateFile(port, GENERIC_READ | GENERIC_WRITE,
                                0, NULL, OPEN_EXISTING,NULL,NULL);
@@ -239,5 +238,3 @@ int Tserial::getNbrOfBytes    (void)
 
     return(n);
 }
-
-
