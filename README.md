@@ -1,5 +1,4 @@
-Image Processing WWS 2014
-=====================================
+# Image Processing WWS 2014
 
 This Repository contains:
 
