@@ -20,19 +20,19 @@ This Repository contains:
   - Sample Images for different modules (Blob/Colour Detection , Noise Reduction)
   - Video for **Problem Statement - I** - *Falling Shapes*
 
-##Mentors
-###Phase I
+## Mentors
+### Phase I
 * Abhinav Jain
 * Abhinav Aggarwalla
 * Shrey Garg
 * Arnav Jain
 
-###Phase II
+### Phase II
 * Abhinav Jain
 * Udai Bhardwaj
 * Arun Patro
 
-##Topics Covered:
+## Topics Covered:
 1. Introduction to Images, Channels and Pixels.
 2. Basic **C++** - Classes and Objects, Standard Template Library.
 3. Introduction to **OpenCV** library and **Visual Studio IDE** ( For Windows Users )
@@ -56,7 +56,7 @@ Introduction to **Microcontroller(AVR/Arduino)** and **Motor Driver**, **Serial 
 \*Not Covered in First Phase <br>
 \*\*Not Covered in Second Phase
 
-##Problem Statements:
+## Problem Statements:
 
   The problem statement given to **First Years**:
 
